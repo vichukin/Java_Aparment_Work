@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col col-4"></div>
+        <div class="col col-4">
+            <form method="post" enctype="multipart/form-data" >
+                <div class="mb-3"><label  class="form-label w-100">Address:<input name="address" type="text" class="form-control"></label></div>
+                <div class="mb-3"><label  class="form-label w-100">Rooms:<input name="rooms" type="number" class="form-control"></label></div>
+                <div class="mb-3"><label  class="form-label w-100">Square metters:<input name="metters" type="number" class="form-control"></label></div>
+                <div class="mb-3"><label  class="form-label w-100">Price:<input name="price" type="number" class="form-control"></label></div>
+                <div class="mb-3" ><label  class="form-label  w-100">Images:<input name="images" type="file" multiple class="form-control"></label></div>
+                <div class="mb-3">
+                    <button class="btn btn-outline-success w-100">Create</button>
+                </div>
+            </form>
+        </div>
+        <div class="col col-4"></div>
+    </div>
+</div>
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>
