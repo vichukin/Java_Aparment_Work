@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="sections/head ::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<header th:insert="sections/header ::header">
+
+</header>
+<div class="modal fade" id="rentHouse" tabindex="-1" aria-labelledby="exampleAddMark" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Rent</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="rent" method="post" id="rentHouseForm">
+                    <input type="hidden" name="apartment" id="rentHouseId" >
+                    <div>
+                        <label class="form-label w-100">
+                            Nights:
+                            <input class="form-control" name="nights" type="number">
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button form="rentHouseForm"  class="btn btn-success">Rent</button>
+            </div>
+        </div>
+    </div>
+</div>
+<body>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+            <div th:each="item: ${list}" class="col" >
+                <div  class="text-decoration-none text-black p-0 mb-4 me-4">
+                    <div class="card p-0 border-0">
+
+<!--                        <img src="@item.Images.OrderByDescending(t=>t.IsMain).FirstOrDefault().Path" style='object-fit: cover; width: 100%;height: 100%; border-radius: 5%' class="card-img-top">-->
+
+                        <div th:id="'apartment'+${item.getId()}" class="carousel slide w-100 h-100" th:onmouseover="'ChangeButtonDisplay(true,'+${item.getId()}+')'"
+                        th:onmouseout="'ChangeButtonDisplay(false,'+${item.getId()}+')'"
+                        data-bs-interval="0" data-bs-ride="false">
+                        <div class="carousel-indicators" hidden th:id="'indicators'+${item.getId()}" id="indicators@(cardid)">
+
+
+                           <button th:each="img: ${item.getImages()}" type="button"
+                                   th:id="'indicator'+${img.getId()}"
+                                   th:attr="data-bs-target='#apartment'+${item.getId()}, data-bs-slide-to=${counter.count}, aria-current=${counter.add()==0?'true':'false'}"
+                                   th:class="${img.getId()==item.getImages().getFirst().getId()?'active':''}"
+
+                                   aria-label="Slide 1"></button>
+                            <th:block th:class="${counter.clear()}"></th:block>
+                        </div>
+                        <div class="carousel-inner ">
+                        <div th:each="img: ${item.getImages()}" th:id="'image'+${img.getId()}" th:class="${img.getId()==item.getImages().getFirst().getId()?'carousel-item active':'carousel-item'} " style="width: 100%;height: 100%;">
+                            <img th:src="${img.getImage()}"
+                                 alt="Table Full of Spices"
+                                 style='object-fit: cover; width: 100%;height: 40vh; border-radius: 5%' />
+                        </div>
+                    </div>
+                    <button hidden th:id="'prev'+${item.getId()}" class="carousel-control-prev " style=" position:absolute; top:0%; left:0;" type="button" th:attr="data-bs-target='#apartment'+${item.getId() }" data-bs-slide="prev">
+                    <h1 class="bi bi-arrow-left-square-fill">
+                    </h1>
+                    <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button hidden th:id="'next'+${item.getId()}" class="carousel-control-next " type="button" th:attr="data-bs-target='#apartment'+${item.getId() }" data-bs-slide="next">
+                    <h1 class="bi bi-arrow-right-square-fill">
+                    </h1>
+                    <span class="visually-hidden">Next</span>
+                    </button>
+
+            </div>
+            <div class="card-body">
+                <h6 th:text="${item.getAddress()}" class="card-title mb-0"></h6>
+                <p th:text="${item.getRooms()}+' Rooms '+${item.getMetters()}+'m^2'" class="card-text mb-0"><small class="text-body-secondary"></small></p>
+                <div class=" d-flex" ><p  class="card-text"><span th:text="${item.getPrice()}+' Zl '" class="fw-bold"></span>  noc</p></div>
+                <button data-bs-toggle="modal" data-bs-target="#rentHouse" onclick="setFormId(event)" th:id="'apart'+${item.id}" class="btn btn-outline-success w-100">Rent</button>
+            </div>
+        </div>
+        </div>
+            </div>
+        </div>
+    </div>
+<script>
+    function ChangeButtonDisplay(isOn, id) {
+        if (isOn) {
+            $(`#prev${id}`).attr("hidden", false);
+            $(`#next${id}`).attr("hidden", false);
+            $(`#indicators${id}`).attr("hidden", false);
+        }
+        else {
+            $(`#prev${id}`).attr("hidden", true);
+            $(`#next${id}`).attr("hidden", true);
+            $(`#indicators${id}`).attr("hidden", true);
+        }
+    }
+    function setFormId(e){
+        let id = e.currentTarget.id;
+        let houseId = id.slice(-id.length+5);
+        console.log(houseId);
+        let formInput = document.getElementById("rentHouseId");
+        formInput.value=houseId;
+    }
+</script>
+</body>
+<footer th:insert="sections/footer ::footer">
+
+</footer>
+</html>
